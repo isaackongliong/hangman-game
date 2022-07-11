@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Hangman</title>
+  </head>
+	
+	<style>
+	.center {
+  	text-align: center;
+}
+	
+		
+	
+	body{
+		background-image: url("giphy.gif");
+		background-size: 100%;
+		
+	height: 0px;
+	padding: 0px;
+	margin: 0px;
+	}
+
+
+		#reset {
+			background-color:#E91519;
+			font-size: 25px;
+		}
+		
+		#start {
+			background-color: #35F742;
+			font-size: 25px;
+		}
+</style>
+	
+  <body>
+	<center>
+    <table border="5">
+	<table style="background: #ffffff">
+      <tr>
+        <td colspan="4">Score: <label id="gameScore">0</label></td>
+        <td colspan="7">--- Hangman ---</td>
+        <td colspan="2" rowspan="2"><button id="start" onclick="startGame();" >Start</button></td>
+      </tr>
+      <tr>
+        <td colspan="4">Fails: <label id="gameFails">0</label></td>
+        <td colspan="7"><label id="word">Click start to get a word</label></td>
+      </tr>
+      <tr>
+        <td><button value="A" onclick="btnLetter('a')">A</button></td>
+        <td><button value="B" onclick="btnLetter('b')">B</button></td>
+        <td><button value="C" onclick="btnLetter('c')">C</button></td>
+        <td><button value="D" onclick="btnLetter('d')">D</button></td>
+        <td><button value="E" onclick="btnLetter('e')">E</button></td>
+        <td><button value="F" onclick="btnLetter('f')">F</button></td>
+        <td><button value="G" onclick="btnLetter('g')">G</button></td>
+        <td><button value="H" onclick="btnLetter('h')">H</button></td>
+        <td><button value="I" onclick="btnLetter('i')">I</button></td>
+        <td><button value="J" onclick="btnLetter('j')">J</button></td>
+        <td><button value="K" onclick="btnLetter('k')">K</button></td>
+        <td><button value="L" onclick="btnLetter('l')">L</button></td>
+        <td><button value="M" onclick="btnLetter('m')">M</button></td>
+      </tr>
+      <tr>
+        <td><button value="N" onclick="btnLetter('n')">N</button></td>
+        <td><button value="O" onclick="btnLetter('o')">O</button></td>
+        <td><button value="P" onclick="btnLetter('p')">P</button></td>
+        <td><button value="Q" onclick="btnLetter('q')">Q</button></td>
+        <td><button value="R" onclick="btnLetter('r')">R</button></td>
+        <td><button value="S" onclick="btnLetter('s')">S</button></td>
+        <td><button value="T" onclick="btnLetter('t')">T</button></td>
+        <td><button value="U" onclick="btnLetter('u')">U</button></td>
+        <td><button value="V" onclick="btnLetter('v')">V</button></td>
+        <td><button value="W" onclick="btnLetter('w')">W</button></td>
+        <td><button value="X" onclick="btnLetter('x')">X</button></td>
+        <td><button value="Y" onclick="btnLetter('y')">Y</button></td>
+        <td><button value="Z" onclick="btnLetter('z')">Z</button></td>
+      </tr>
+    </table>
+		 <td><button id="reset">reset</button></td>
+	  </table>
+	</center>
+
+    <script type="text/javascript">
+      var wordArray = ["apple", "orange", "durian", "pear"];
+      var wordIndex = 0;
+      var wordCurrent;
+      var wordGuess = "";
+      var playerScore = 0;  // Player score
+      var playerFails = 0;  // No. of wrong guesses
+
+      function startGame() {
+        var lblWord = document.getElementById("word");
+
+        wordIndex = Math.floor(Math.random() * 4);
+        console.log("wordIndex = ", wordIndex);
+
+        wordCurrent = wordArray[wordIndex];
+
+        for(i=0; i<wordCurrent.length; i++){
+          wordGuess += "-";
+        }
+
+        lblWord.innerHTML = wordGuess;
+
+      }
+
+      function setCharAt(str, index, chr) {
+        if (index > str.length - 1) {
+          return str;
+        }
+        else {
+          return str.substr(0, index) + chr + 
+                 str.substr(index + 1);
+        }
+      }
+
+      function btnLetter(letter) {
+        var charFound = false;
+
+        console.log("button clicked: " + letter);
+
+        for(i=0; i<wordCurrent.length; i++){
+          // Correct letter found!
+          if (wordCurrent[i] == letter){
+            console.log("Found!");
+
+            wordGuess = setCharAt(wordGuess, i, letter);
+            charFound = true;
+          }
+        }
+
+        // A valid letter is found in the mystery word
+        if (charFound == true) {
+          updateScore(); 
+			if (playerScore == wordCurrent.length) {
+				alert("win");
+			}
+        }
+        // Wrong letter guessed
+        else {
+          updateFails();
+          if (playerFails > wordCurrent.length) {
+            alert("ur trash!");
+          }
+        }
+
+        document.getElementById("word").innerHTML = wordGuess;
+      }
+
+      function updateScore() {
+        var lblScore = document.getElementById("gameScore");
+
+        playerScore = playerScore + 1;
+        lblScore.innerHTML = playerScore;
+
+      }
+
+      function updateFails() {
+        var lblFails = document.getElementById("gameFails");
+
+        playerFails = playerFails + 1;
+        lblFails.innerHTML = playerFails;
+      }
+		
+		function reset() {
+			
+		}
+    </script>
+  </body>
+</html>
